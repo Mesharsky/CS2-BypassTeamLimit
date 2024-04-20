@@ -10,7 +10,7 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
 {
     public override string ModuleName => "[CS2] Team Limit Bypass";
 
-    public override string ModuleDescription => "Bypass hardcored team limits";
+    public override string ModuleDescription => "Bypass hardcoded team limits";
 
     public override string ModuleAuthor => "Mesharsky";
 
@@ -18,8 +18,8 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
 
     public enum JoinTeamReason
     {
-        OneTeamChange = 5,
-        TeamsFull = 6,
+        OneTeamChange = 1,
+        TeamsFull = 2,
         TerroristTeamFull = 7,
         CTTeamFull = 8
     }
@@ -36,8 +36,6 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
             {
                 TerroristSpawns = 0;
                 CTSpawns = 0;
-
-                Console.WriteLine("Starting to count spawn points.");
 
                 var tSpawns = Utilities.FindAllEntitiesByDesignerName<CEntityInstance>("info_player_terrorist");
                 var ctSpawns = Utilities.FindAllEntitiesByDesignerName<CEntityInstance>("info_player_counterterrorist");
@@ -85,7 +83,9 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
         switch (m_eReason)
         {
             case JoinTeamReason.OneTeamChange:
+            {
                 return HookResult.Continue;
+            }
 
             case JoinTeamReason.TeamsFull:
 
@@ -95,14 +95,12 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
                 break;
 
             case JoinTeamReason.TerroristTeamFull:
-
                 if (m_iTs == TerroristSpawns)
                     return HookResult.Continue;
 
                 break;
 
             case JoinTeamReason.CTTeamFull:
-
                 if (m_iCTs == CTSpawns)
                     return HookResult.Continue;
 
@@ -138,6 +136,10 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
                     {
                         SelectedTeam[player] = teamId;
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Failed to parse team ID.");
                 }
             }
         }
