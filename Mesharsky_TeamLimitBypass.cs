@@ -14,7 +14,7 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
 
     public override string ModuleAuthor => "Mesharsky";
 
-    public override string ModuleVersion => "0.1";
+    public override string ModuleVersion => "0.3";
 
     public enum JoinTeamReason
     {
@@ -57,6 +57,9 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
         {
             var player = Utilities.GetPlayerFromSlot(slot);
 
+            if (player == null)
+                return;
+
             SelectedTeam[player] = 0;
         });
 
@@ -67,7 +70,7 @@ public class Mesharsky_TeamLimitBypass : BasePlugin
     [GameEventHandler]
     public HookResult TeamJoinFailed(EventJointeamFailed @event, GameEventInfo info)
     {
-        CCSPlayerController player = @event.Userid;
+        CCSPlayerController? player = @event.Userid;
 
         if (player == null || !player.IsValid)
             return HookResult.Continue;
